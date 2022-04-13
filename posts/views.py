@@ -1,6 +1,9 @@
 from rest_framework import generics, permissions
+from rest_framework.response import Response
+
 from .models import Post, Comment
-from .serializers import PostSerializer, CommentSerializer
+from .serializers import PostSerializer, CommentSerializer, ReviewCreateSerializer
+from rest_framework.views import APIView
 
 
 class PostList(generics.ListCreateAPIView):
@@ -29,3 +32,11 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
+
+
+class ReviewCreateView(APIView):
+    def post(self, request):
+        review = ReviewCreateSerializer(data=request.data)
+        if review.is_valid():
+            review.save()
+        return Response(status=201)
