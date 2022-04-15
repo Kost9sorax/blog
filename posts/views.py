@@ -19,7 +19,7 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PostSerializer
 
 
-class CommentList(generics.ListCreateAPIView):
+class CommentList(generics.ListAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -34,9 +34,9 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
 
 
-class ReviewCreateView(APIView):
-    def post(self, request):
-        review = ReviewCreateSerializer(data=request.data)
-        if review.is_valid():
-            review.save()
-        return Response(status=201)
+class ReviewCreateView(generics.CreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = ReviewCreateSerializer
+
+    def perform_create(self, serializer):
+        serializer.save()

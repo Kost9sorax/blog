@@ -8,16 +8,24 @@ class RecursiveSerializer(serializers.Serializer):
         return serializer.data
 
 
+class FilterReviewListSerializer(serializers.ListSerializer):
+    def to_representation(self, data):
+        data = data.filter(parent=None)
+        return super().to_representation(data)
+
+
 class ReviewCreateSerializer(serializers.ModelSerializer):
     class Meta:
+        list_serializer_class = FilterReviewListSerializer
         model = Comment
-        fields = "__all__"
+        fields = ['id', 'body', 'post', 'parent']
 
 
 class CommentSerializer(serializers.ModelSerializer):
     children = RecursiveSerializer(many=True)
 
     class Meta:
+        list_serializer_class = FilterReviewListSerializer
         model = Comment
         fields = ['id', 'body', 'post', 'parent', 'children']
 
@@ -27,4 +35,4 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'text', 'comments']
+        fields = ['id', 'comments']
