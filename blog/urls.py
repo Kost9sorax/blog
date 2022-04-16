@@ -20,7 +20,7 @@ from posts.views import *
 from rest_framework import routers
 
 router = routers.SimpleRouter()
-router.register(r'comments', PostViewSet)
+router.register(r'post', PostViewSet)
 
 
 urlpatterns = [
@@ -28,5 +28,5 @@ urlpatterns = [
     # path('api/v1/posts/', PostList.as_view()),
     # path('api/v1/post/<int:pk>/', PostDetail.as_view()),
     # path('api/v1/comments/', CommentList.as_view()),
-    path(r'api/v1/post/', include(router.urls)),
+    path(r'api/v1/', include(router.urls)),
 ]
