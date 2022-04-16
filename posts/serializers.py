@@ -14,13 +14,6 @@ class FilterReviewListSerializer(serializers.ListSerializer):
         return super().to_representation(data)
 
 
-class ReviewCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        list_serializer_class = FilterReviewListSerializer
-        model = Comment
-        fields = ['id', 'body', 'post', 'parent']
-
-
 class CommentSerializer(serializers.ModelSerializer):
     children = RecursiveSerializer(many=True)
 
@@ -28,6 +21,13 @@ class CommentSerializer(serializers.ModelSerializer):
         list_serializer_class = FilterReviewListSerializer
         model = Comment
         fields = ['id', 'body', 'post', 'parent', 'children']
+
+
+class ReviewCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        list_serializer_class = FilterReviewListSerializer
+        model = Comment
+        fields = ['id', 'body', 'parent', 'post']
 
 
 class PostSerializer(serializers.ModelSerializer):
