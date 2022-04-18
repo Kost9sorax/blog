@@ -25,7 +25,6 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class ReviewCreateSerializer(serializers.ModelSerializer):
     class Meta:
-        list_serializer_class = FilterReviewListSerializer
         model = Comment
         fields = ['id', 'body', 'parent', 'post']
 
