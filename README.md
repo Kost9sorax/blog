@@ -3,6 +3,8 @@
 ## Development workflow
 Для установки всех зависимостей выполнить `pip install -r requirements.txt`
 
+Для создания базы данных выполнить `python manage.py migrate`
+
 Для запуска выполнить `python manage.py runserver`
 
 ## Запуск Docker-контейнера
