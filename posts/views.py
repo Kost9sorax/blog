@@ -1,19 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from django.core import serializers
 from django.utils.decorators import method_decorator
-from rest_framework import generics, permissions, viewsets, status
+from rest_framework import generics, permissions, viewsets
 from rest_framework.decorators import action
-from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from .models import Post, Comment
-from .serializers import PostSerializer, CommentSerializer, ReviewCreateSerializer, ThirdFilterListSerializer, \
-    ThirdSerializer
-from rest_framework.views import APIView
-
-from rest_framework.parsers import JSONParser
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from .serializers import PostSerializer, CommentSerializer, ReviewCreateSerializer, ThirdSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -28,6 +20,14 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return HttpResponse(obj)
+
+
+class PostList(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+    def perform_create(self, serializer):
+        serializer.save()
 
 
 class ThirdViewSet(viewsets.ModelViewSet):

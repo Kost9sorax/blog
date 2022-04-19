@@ -14,7 +14,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.template.defaulttags import url
 from django.urls import path, include, re_path
 from posts.views import *
 from rest_framework import routers
@@ -47,9 +46,7 @@ urlpatterns = [
     re_path(r'^swagger(.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    # path('api/v1/posts/', PostList.as_view()),
-    # path('api/v1/post/<int:pk>/', PostDetail.as_view()),
-    # path('api/v1/comments/', CommentList.as_view()),
+    path('api/v1/posts/', PostList.as_view()),
     path(r'api/v1/', include(router.urls)),
     path(r'api/v1/', include(comments_third_lvl.urls)),
     path(r'api/v1/comments/', CommentList.as_view()),
