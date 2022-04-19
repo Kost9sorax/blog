@@ -14,6 +14,23 @@ class FilterReviewListSerializer(serializers.ListSerializer):
         return super().to_representation(data)
 
 
+class ThirdFilterListSerializer(serializers.ListSerializer):
+    def to_rep(self, data):
+        first_lvl = data.filter(parent=None)
+        second_lvl = data.filter(parent=first_lvl)
+        third_lvl = data.filter(parent=second_lvl)
+        return CommentSerializer(third_lvl.data, many=True)
+
+
+class CommentThirdSerializer(serializers.ModelSerializer):
+    children = None
+
+    class Meta:
+        list_serializer_class = ThirdFilterListSerializer
+        model = Comment
+        fields = ['id', 'body', 'post', 'parent', 'children']
+
+
 class CommentSerializer(serializers.ModelSerializer):
     children = RecursiveSerializer(many=True)
 
@@ -31,6 +48,14 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Post
+        fields = ['id', 'comments']
+
+
+class ThirdSerializer(serializers.ModelSerializer):
+    comments = CommentThirdSerializer(many=True, read_only=True)
 
     class Meta:
         model = Post

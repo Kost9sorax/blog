@@ -39,6 +39,8 @@ schema_view = get_schema_view(
 router = routers.SimpleRouter()
 router.register(r'post', PostViewSet)
 
+comments_third_lvl = routers.SimpleRouter()
+comments_third_lvl.register(r'third/post', ThirdViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -49,5 +51,6 @@ urlpatterns = [
     # path('api/v1/post/<int:pk>/', PostDetail.as_view()),
     # path('api/v1/comments/', CommentList.as_view()),
     path(r'api/v1/', include(router.urls)),
+    path(r'api/v1/', include(comments_third_lvl.urls)),
     path(r'api/v1/comments/', CommentList.as_view()),
 ]

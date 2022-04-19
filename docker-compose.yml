@@ -1,0 +1,10 @@
+version: '3.9'
+services:
+  web:
+    container_name: blog
+    build: .
+    restart: on-failure
+    volumes:
+      - "./src:/blog/src"
+    ports:
+      - "8000:8000"
